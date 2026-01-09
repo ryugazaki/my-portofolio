@@ -32,7 +32,7 @@ jobs:
       # --base-href sangat penting agar aset (css/js) dimuat dengan benar di GitHub Pages
       # Ganti 'nama-repo-anda' dengan nama repositori GitHub Anda
       - name: Build Angular App
-        run: npm run build -- --configuration production --base-href /nama-repo-anda/
+        run: npm run build -- --configuration production --base-href /my-portofolio/
 
       # 5. Deploy ke GitHub Pages
       - name: Deploy to GitHub Pages
