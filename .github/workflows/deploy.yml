@@ -4,7 +4,7 @@ on:
   # Trigger workflow saat ada push ke branch "main"
   push:
     branches:
-      - main
+      - master
 
   # Mengizinkan deploy manual dari tab Actions di GitHub
   workflow_dispatch:
