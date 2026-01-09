@@ -1,0 +1,44 @@
+name: Build and Deploy Angular to GitHub Pages
+
+on:
+  # Trigger workflow saat ada push ke branch "main"
+  push:
+    branches:
+      - main
+
+  # Mengizinkan deploy manual dari tab Actions di GitHub
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout source code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js (Sesuaikan versi dengan package.json proyek Anda)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Ganti dengan versi Node yang Anda gunakan
+
+      # 3. Install dependencies (gunakan npm ci untuk build yang lebih cepat dan konsisten)
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Build aplikasi Angular
+      # --base-href sangat penting agar aset (css/js) dimuat dengan benar di GitHub Pages
+      # Ganti 'nama-repo-anda' dengan nama repositori GitHub Anda
+      - name: Build Angular App
+        run: npm run build -- --configuration production --base-href /nama-repo-anda/
+
+      # 5. Deploy ke GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Folder output default Angular biasanya 'dist/nama-proyek' (cek angular.json)
+          # Jika di angular.json outputPath hanya 'dist', gunakan 'dist'
+          publish_dir: ./dist/my-portofolio
