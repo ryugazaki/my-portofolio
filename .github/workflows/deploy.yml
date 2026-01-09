@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Ganti dengan versi Node yang Anda gunakan
+          node-version: '20'
 
       # 3. Install dependencies (gunakan npm ci untuk build yang lebih cepat dan konsisten)
       - name: Install dependencies
@@ -41,4 +41,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Folder output default Angular biasanya 'dist/nama-proyek' (cek angular.json)
           # Jika di angular.json outputPath hanya 'dist', gunakan 'dist'
-          publish_dir: ./dist/my-portofolio
+          publish_dir: ./dist/my-portofolio/browser
