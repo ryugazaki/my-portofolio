@@ -11,10 +11,16 @@ import { CommonModule } from '@angular/common';
 export class App {
   // Personal Information
   protected name = 'Ryan Apriansyah';
+
+  constructor() {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', () => this.onScroll());
+    }
+  }
   protected role = 'Senior Frontend Developer';
   protected tagline = 'Building exceptional digital experiences with modern web technologies';
   protected description =
-    'A passionate and creative frontend developer with 7+ years of experience in crafting scalable, user-centric web applications. Expert in Angular ecosystem with proven track record of delivering high-impact projects for enterprise clients including PLN, MAKO Media, and various tech companies.';
+    'A passionate and creative frontend developer with 7+ years of experience in crafting scalable, user-centric web applications. Expert in Angular ecosystem with proven track record of delivering high-impact projects for enterprise clients including PLN, AKO Media Asia (SALT Indonesia), and various tech companies.';
 
   // Stats
   protected stats = [
@@ -32,7 +38,7 @@ export class App {
   protected experiences = [
     {
       id: 1,
-      company: 'MAKO MEDIA ASIA (SALT Indonesia)',
+      company: 'AKO MEDIA ASIA (SALT Indonesia)',
       position: 'Senior Frontend Developer',
       location: 'Jakarta, Indonesia',
       period: 'August 2023 – Present',
@@ -125,7 +131,7 @@ export class App {
         'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImcxIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmZjMTA3Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmU1OTMwIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIyNTAiIGZpbGw9InVybCgjZzEpIi8+PHJlY3QgeD0iMjAiIHk9IjMwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjkwIiByeD0iOCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuOSIvPjxyZWN0IHg9IjIwIiB5PSIxMzAiIHdpZHRoPSI3NSIgaGVpZ2h0PSI1MCIgcng9IjgiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjkiLz48cmVjdCB4PSIxMDUiIHk9IjEzMCIgd2lkdGg9Ijc1IiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuOSIvPjxjaXJjbGUgY3g9IjMzMCIgY3k9IjcyIiByPSIzMCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuMiIvPjx0ZXh0IHg9IjMzMCIgeT0iNzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCI+Rk1DPC90ZXh0Pjwvc3ZnPg==',
       technologies: ['Angular 17', 'TailwindCSS', 'BIT Cloud', 'Golang', 'MySQL', 'Redis'],
       featured: true,
-      company: 'MAKO MEDIA ASIA'
+      company: 'AKO MEDIA ASIA'
     },
     {
       id: 2,
@@ -137,7 +143,7 @@ export class App {
         'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImcyIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjY3ZWVhIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNzY0YWIyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIyNTAiIGZpbGw9InVybCgjZzIpIi8+PHJlY3QgeD0iMjAiIHk9IjMwIiB3aWR0aD0iMzYwIiBoZWlnaHQ9IjQ1IiByeD0iOCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuOSIvPjxyZWN0IHg9IjIwIiB5PSI5MCIgd2lkdGg9IjExNSIgaGVpZ2h0PSI5MCIgcng9IjgiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjkiLz48cmVjdCB4PSIxNDUiIHk9IjkwIiB3aWR0aD0iMTE1IiBoZWlnaHQ9IjkyIiByeD0iOCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuOSIvPjxyZWN0IHg9IjI3MCIgeT0iOTAiIHdpZHRoPSIxMTUiIGhlaWdodD0iOTIiIHJ4PSI4IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC45Ii8+PHRleHQgeD0iMjAwIiB5PSIxNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjMwIiBmb250LXdlaWdodD0iYm9sZCI+Q1RQPC90ZXh0Pjwvc3ZnPg==',
       technologies: ['Angular 17', 'TailwindCSS', 'BIT Cloud', 'Golang', 'MySQL', 'Redis'],
       featured: true,
-      company: 'MAKO MEDIA ASIA'
+      company: 'AKO MEDIA ASIA'
     },
     {
       id: 3,
@@ -149,7 +155,7 @@ export class App {
         'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImczIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojOGI1Y2Y2Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojM2YzYjk4Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIyNTAiIGZpbGw9InVybCgjZzMpIi8+PHBhdGggZD0iTTUwIDIwbDQwIDQwIDQwLTQwIDQwIDQwIDQwLTQwIDQwIDQwIDQwLTQwIDQwIDQwIDQwLTQwIDQwIDQwIDQwLTQwIDQwIDQwIDQwLTQwIDQwIDQwIDQwLTQwIDQwIDQwIDQwLTQwIDQwIDQwIDQwLTQwIDQwIDQwIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9IjAuMyIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjkwIiBjeT0iNjAiIHI9IjgiIGZpbGw9IndoaXRlIi8+PGNpcmNsZSBjeD0iMTMwIiBjeT0iMTAwIiByPSIxMiIgZmlsbD0id2hpdGUiLz48Y2lyY2xlIGN4PSIxNzAiIGN5PSI2MCIgcj0iMTAiIGZpbGw9IndoaXRlIi8+PGNpcmNsZSBjeD0iMjEwIiBjeT0iMTQwIiByPSIxNCIgZmlsbD0id2hpdGUiLz48Y2lyY2xlIGN4PSIyNTAiIGN5PSI4MCIgcj0iOSIgZmlsbD0id2hpdGUiLz48Y2lyY2xlIGN4PSIyOTAiIGN5PSIxODAiIHI9IjExIiBmaWxsPSJ3aGl0ZSIvPjxjaXJjbGUgY3g9IjMzMCIgY3k9IjEyMCIgcj0iMTMiIGZpbGw9IndoaXRlIi8+PHRleHQgeD0iMjAwIiB5PSIyMjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCI+VmlzdWFsaXphdGlvbjwvdGV4dD48L3N2Zz4=',
       technologies: ['Angular 20', 'TailwindCSS', 'BIT Cloud', 'Golang', 'MySQL', 'Redis'],
       featured: true,
-      company: 'MAKO MEDIA ASIA'
+      company: 'AKO MEDIA ASIA'
     },
     {
       id: 4,
@@ -325,7 +331,7 @@ export class App {
       id: 1,
       name: 'Ahmad Rizki',
       position: 'Project Manager',
-      company: 'MAKO MEDIA ASIA',
+      company: 'AKO MEDIA ASIA',
       avatar: '👨‍💼',
       text: 'Ryan is an exceptional frontend developer with deep expertise in Angular. His ability to translate complex requirements into elegant, user-friendly interfaces is remarkable. Always delivers high-quality code on time.',
       rating: 5
@@ -363,6 +369,22 @@ export class App {
 
   toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  // Scroll to section
+  scrollToSection(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 80; // navbar height
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+    this.mobileMenuOpen = false;
   }
 
   // Scroll handler for navbar

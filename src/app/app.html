@@ -1,19 +1,19 @@
 <header class="navbar" [class.scrolled]="isScrolled">
   <div class="nav-container">
     <div class="nav-logo">
-      <a href="#home" class="logo-link">
+      <a href="javascript:void(0)" class="logo-link" (click)="scrollToSection('home')">
         <span class="logo-text">{{ name }}</span>
         <span class="logo-dot">.</span>
       </a>
     </div>
     <nav class="nav-menu" [class.active]="mobileMenuOpen">
-      <a href="#home" class="nav-link" (click)="mobileMenuOpen = false">Home</a>
-      <a href="#about" class="nav-link" (click)="mobileMenuOpen = false">About</a>
-      <a href="#experience" class="nav-link" (click)="mobileMenuOpen = false">Experience</a>
-      <a href="#projects" class="nav-link" (click)="mobileMenuOpen = false">Projects</a>
-      <a href="#skills" class="nav-link" (click)="mobileMenuOpen = false">Skills</a>
-      <a href="#testimonials" class="nav-link" (click)="mobileMenuOpen = false">Testimonials</a>
-      <a href="#contact" class="nav-link" (click)="mobileMenuOpen = false">Contact</a>
+      <a href="javascript:void(0)" class="nav-link" (click)="scrollToSection('home')">Home</a>
+      <a href="javascript:void(0)" class="nav-link" (click)="scrollToSection('about')">About</a>
+      <a href="javascript:void(0)" class="nav-link" (click)="scrollToSection('experience')">Experience</a>
+      <a href="javascript:void(0)" class="nav-link" (click)="scrollToSection('projects')">Projects</a>
+      <a href="javascript:void(0)" class="nav-link" (click)="scrollToSection('skills')">Skills</a>
+      <a href="javascript:void(0)" class="nav-link" (click)="scrollToSection('testimonials')">Testimonials</a>
+      <a href="javascript:void(0)" class="nav-link" (click)="scrollToSection('contact')">Contact</a>
     </nav>
     <button class="nav-toggle" (click)="toggleMobileMenu()" [class.active]="mobileMenuOpen">
       <span></span>
@@ -55,13 +55,13 @@
         </div>
 
         <div class="hero-buttons">
-          <a href="#projects" class="btn btn-primary">
+          <a href="javascript:void(0)" class="btn btn-primary" (click)="scrollToSection('projects')">
             <span>View My Work</span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M6 10H14M14 10L11 7M14 10L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </a>
-          <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+          <a href="javascript:void(0)" class="btn btn-secondary" (click)="scrollToSection('contact')">Get In Touch</a>
         </div>
 
         <!-- Featured Skills -->
@@ -436,10 +436,10 @@
       <div class="footer-links">
         <div class="footer-section">
           <h4>Navigation</h4>
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
+          <a href="javascript:void(0)" (click)="scrollToSection('home')">Home</a>
+          <a href="javascript:void(0)" (click)="scrollToSection('about')">About</a>
+          <a href="javascript:void(0)" (click)="scrollToSection('projects')">Projects</a>
+          <a href="javascript:void(0)" (click)="scrollToSection('contact')">Contact</a>
         </div>
         <div class="footer-section">
           <h4>Connect</h4>
