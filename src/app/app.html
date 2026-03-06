@@ -1,63 +1,154 @@
-<header class="navbar">
+<header class="navbar" [class.scrolled]="isScrolled">
   <div class="nav-container">
     <div class="nav-logo">
-      <span class="logo-text">{{ name }}</span>
+      <a href="#home" class="logo-link">
+        <span class="logo-text">{{ name }}</span>
+        <span class="logo-dot">.</span>
+      </a>
     </div>
     <nav class="nav-menu" [class.active]="mobileMenuOpen">
-      <a href="#home" class="nav-link">Home</a>
-      <a href="#about" class="nav-link">About</a>
-      <a href="#projects" class="nav-link">Projects</a>
-      <a href="#skills" class="nav-link">Skills</a>
-      <a href="#contact" class="nav-link">Contact</a>
+      <a href="#home" class="nav-link" (click)="mobileMenuOpen = false">Home</a>
+      <a href="#about" class="nav-link" (click)="mobileMenuOpen = false">About</a>
+      <a href="#experience" class="nav-link" (click)="mobileMenuOpen = false">Experience</a>
+      <a href="#projects" class="nav-link" (click)="mobileMenuOpen = false">Projects</a>
+      <a href="#skills" class="nav-link" (click)="mobileMenuOpen = false">Skills</a>
+      <a href="#testimonials" class="nav-link" (click)="mobileMenuOpen = false">Testimonials</a>
+      <a href="#contact" class="nav-link" (click)="mobileMenuOpen = false">Contact</a>
     </nav>
-    <button class="nav-toggle" (click)="toggleMobileMenu()">☰</button>
+    <button class="nav-toggle" (click)="toggleMobileMenu()" [class.active]="mobileMenuOpen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
 
 <main>
   <!-- Hero Section -->
   <section id="home" class="hero">
+    <div class="hero-bg">
+      <div class="hero-gradient"></div>
+      <div class="hero-particles">
+        @for (i of [1,2,3,4,5,6,7,8,9,10,11,12]; track i) {
+          <div class="particle" [style]="'--delay: ' + (i * 0.2) + 's'"></div>
+        }
+      </div>
+    </div>
     <div class="hero-content">
-      <div class="hero-text">
+      <div class="hero-text animate-fade-in-up">
+        <p class="hero-greeting">👋 Hello, I'm</p>
         <h1 class="hero-title">
-          Hi, I'm <span class="highlight">{{ name }}</span>
+          <span class="highlight">{{ name }}</span>
         </h1>
         <p class="hero-subtitle">{{ role }}</p>
+        <p class="hero-tagline">{{ tagline }}</p>
         <p class="hero-description">{{ description }}</p>
+
+        <!-- Stats -->
+        <div class="hero-stats">
+          @for (stat of stats; track stat.value) {
+            <div class="stat-item animate-fade-in-up">
+              <span class="stat-value">{{ stat.value }}</span>
+              <span class="stat-label">{{ stat.label }}</span>
+            </div>
+          }
+        </div>
+
         <div class="hero-buttons">
-          <a href="#projects" class="btn btn-primary">View My Work</a>
-          <a href="#contact" class="btn btn-secondary">Contact Me</a>
+          <a href="#projects" class="btn btn-primary">
+            <span>View My Work</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M6 10H14M14 10L11 7M14 10L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+        </div>
+
+        <!-- Featured Skills -->
+        <div class="hero-skills">
+          <span class="hero-skills-label">Tech Stack:</span>
+          @for (skill of featuredSkills; track skill.name) {
+            <span class="skill-badge" [style]="'--color: ' + skill.color">
+              <span class="skill-icon">{{ skill.icon }}</span>
+              {{ skill.name }}
+            </span>
+          }
         </div>
       </div>
-      <div class="hero-image">
-        <div class="avatar">
-          <img [src]="'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSIxMDAiIGZpbGw9IiNmMGYwZjAiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSI4MCIgcj0iMzAiIGZpbGw9IiMzMzMzMzMiLz48ZWxsaXBzZSBjeD0iMTAwIiBjeT0iMTUwIiByeD0iNjAiIHJ5PSI0MCIgZmlsbD0iIzMzMzMzMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTA1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9ImJvbGQiPjwvdGV4dD48L3N2Zz4='"
-               alt="Profile Avatar"
-               class="profile-img">
+      <div class="hero-image animate-fade-in-right">
+        <div class="avatar-container">
+          <div class="avatar-ring"></div>
+          <div class="avatar">
+            <div class="avatar-placeholder">
+              <span class="avatar-initials">{{ name.charAt(0) }}</span>
+            </div>
+          </div>
+          <div class="avatar-glow"></div>
+        </div>
+        <!-- Floating cards -->
+        <div class="floating-card card-1">
+          <span class="card-icon">💼</span>
+          <span class="card-text">7+ Years Exp.</span>
+        </div>
+        <div class="floating-card card-2">
+          <span class="card-icon">🚀</span>
+          <span class="card-text">15+ Projects</span>
+        </div>
+        <div class="floating-card card-3">
+          <span class="card-icon">🏢</span>
+          <span class="card-text">4 Companies</span>
         </div>
       </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator">
+      <span>Scroll Down</span>
+      <div class="scroll-arrow"></div>
     </div>
   </section>
 
   <!-- About Section -->
   <section id="about" class="about">
     <div class="container">
-      <h2 class="section-title">About Me</h2>
+      <div class="section-header animate-fade-in-up">
+        <span class="section-tag">About Me</span>
+        <h2 class="section-title">Get To Know Me</h2>
+        <p class="section-subtitle">Passionate developer, creative problem solver, lifelong learner</p>
+      </div>
+
       <div class="about-content">
-        <div class="about-text">
+        <div class="about-text animate-fade-in-left">
           <p>{{ aboutText }}</p>
-          <div class="about-details">
-            <div class="detail-item">
-              <span class="detail-label">Experience:</span>
-              <span class="detail-value">{{ experience }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">Education:</span>
-              <span class="detail-value">{{ education }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">Location:</span>
+        </div>
+
+        <div class="about-details animate-stagger-in">
+          <div class="detail-card">
+            <div class="detail-icon">📍</div>
+            <div class="detail-content">
+              <span class="detail-label">Location</span>
               <span class="detail-value">{{ location }}</span>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-icon">🎓</div>
+            <div class="detail-content">
+              <span class="detail-label">Education</span>
+              <span class="detail-value">B.S. Computer Science</span>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-icon">💼</div>
+            <div class="detail-content">
+              <span class="detail-label">Experience</span>
+              <span class="detail-value">7+ Years</span>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-icon">🌐</div>
+            <div class="detail-content">
+              <span class="detail-label">Status</span>
+              <span class="detail-value">Open to Opportunities</span>
             </div>
           </div>
         </div>
@@ -65,27 +156,117 @@
     </div>
   </section>
 
+  <!-- Experience Timeline Section -->
+  <section id="experience" class="experience">
+    <div class="container">
+      <div class="section-header animate-fade-in-up">
+        <span class="section-tag">Career Journey</span>
+        <h2 class="section-title">Work Experience</h2>
+        <p class="section-subtitle">My professional journey through the tech industry</p>
+      </div>
+
+      <div class="timeline">
+        @for (exp of experiences; track exp.id) {
+          <div class="timeline-item animate-fade-in-up">
+            <div class="timeline-dot">
+              <span class="dot-icon">{{ exp.icon }}</span>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-date">{{ exp.period }}</div>
+              <div class="timeline-header">
+                <h3 class="timeline-title">{{ exp.position }}</h3>
+                <span class="timeline-company">{{ exp.company }}</span>
+                <span class="timeline-type">{{ exp.type }}</span>
+              </div>
+              <p class="timeline-description">{{ exp.description }}</p>
+              <div class="timeline-projects">
+                <span class="projects-label">Projects: </span>
+                @for (project of exp.projects; track project) {
+                  <span class="project-tag">{{ project }}</span>
+                }
+              </div>
+              <div class="timeline-tech">
+                @for (tech of exp.technologies; track tech) {
+                  <span class="tech-badge">{{ tech }}</span>
+                }
+              </div>
+              <div class="timeline-location">
+                <span>📍 {{ exp.location }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Education Section -->
+  <section class="education">
+    <div class="container">
+      <div class="section-header animate-fade-in-up">
+        <span class="section-tag">Academic Background</span>
+        <h2 class="section-title">Education</h2>
+        <p class="section-subtitle">My educational journey and achievements</p>
+      </div>
+
+      <div class="education-grid">
+        @for (edu of education; track edu.id) {
+          <div class="education-card animate-scale-in">
+            <div class="edu-icon">🎓</div>
+            <div class="edu-content">
+              <h3 class="edu-school">{{ edu.school }}</h3>
+              <p class="edu-degree">{{ edu.degree }}</p>
+              <p class="edu-period">{{ edu.period }}</p>
+              <p class="edu-gpa">GPA: {{ edu.gpa }}</p>
+              <p class="edu-description">{{ edu.description }}</p>
+              <div class="edu-location">📍 {{ edu.location }}</div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
   <!-- Projects Section -->
   <section id="projects" class="projects">
     <div class="container">
-      <h2 class="section-title">Featured Projects</h2>
+      <div class="section-header animate-fade-in-up">
+        <span class="section-tag">Portfolio</span>
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-subtitle">A selection of projects I've worked on</p>
+      </div>
+
+      <!-- Project filters -->
+      <div class="project-filters animate-fade-in-up">
+        <button class="filter-btn active">All Projects</button>
+        <button class="filter-btn">Enterprise</button>
+        <button class="filter-btn">Dashboard</button>
+        <button class="filter-btn">Web Apps</button>
+      </div>
+
       <div class="projects-grid">
         @for (project of projects; track project.id) {
-          <div class="project-card">
+          <div class="project-card" [class.featured]="project.featured" animate-fade-in-up>
             <div class="project-image">
-              <img [src]="project.image" [alt]="project.title">
+              <img [src]="project.image" [alt]="project.title" />
+              <div class="project-overlay">
+                <span class="project-category">{{ project.category }}</span>
+                @if (project.featured) {
+                  <span class="project-featured-badge">⭐ Featured</span>
+                }
+              </div>
             </div>
             <div class="project-content">
+              <div class="project-company">
+                <span class="company-icon">🏢</span>
+                {{ project.company }}
+              </div>
               <h3 class="project-title">{{ project.title }}</h3>
               <p class="project-description">{{ project.description }}</p>
               <div class="project-tech">
                 @for (tech of project.technologies; track tech) {
                   <span class="tech-tag">{{ tech }}</span>
                 }
-              </div>
-              <div class="project-links">
-                <a [href]="project.demoLink" class="project-link" target="_blank">Live Demo</a>
-                <a [href]="project.githubLink" class="project-link" target="_blank">GitHub</a>
               </div>
             </div>
           </div>
@@ -97,60 +278,145 @@
   <!-- Skills Section -->
   <section id="skills" class="skills">
     <div class="container">
-      <h2 class="section-title">Skills & Technologies</h2>
-      <div class="skills-grid">
-        @for (skill of skills; track skill.id) {
-          <div class="skill-card">
-            <div class="skill-icon">{{ skill.icon }}</div>
-            <h3 class="skill-name">{{ skill.name }}</h3>
-            <div class="skill-level">
-              <div class="skill-bar">
-                <div class="skill-progress" [style.width.%]="skill.level"></div>
-              </div>
-              <span class="skill-percentage">{{ skill.level }}%</span>
+      <div class="section-header animate-fade-in-up">
+        <span class="section-tag">Expertise</span>
+        <h2 class="section-title">Skills & Technologies</h2>
+        <p class="section-subtitle">Technologies and tools I work with</p>
+      </div>
+
+      <div class="skills-wrapper">
+        @for (category of skillCategories; track category.id) {
+          <div class="skill-category animate-scale-in">
+            <div class="category-header" [style]="'--accent-color: ' + category.color">
+              <span class="category-icon">{{ category.icon }}</span>
+              <h3 class="category-name">{{ category.name }}</h3>
+            </div>
+            <div class="category-skills">
+              @for (skill of category.skills; track skill.name) {
+                <div class="skill-item">
+                  <div class="skill-info">
+                    <span class="skill-name">{{ skill.name }}</span>
+                    <span class="skill-percentage">{{ skill.level }}%</span>
+                  </div>
+                  <div class="skill-bar">
+                    <div class="skill-progress" [style.width.%]="skill.level" [style]="'--accent-color: ' + category.color"></div>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         }
       </div>
     </div>
   </section>
-  
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="testimonials">
+    <div class="container">
+      <div class="section-header animate-fade-in-up">
+        <span class="section-tag">Recommendations</span>
+        <h2 class="section-title">What People Say</h2>
+        <p class="section-subtitle">Feedback from colleagues and clients</p>
+      </div>
+
+      <div class="testimonials-grid">
+        @for (testimonial of testimonials; track testimonial.id) {
+          <div class="testimonial-card animate-scale-in">
+            <div class="testimonial-rating">
+              @for (i of [1,2,3,4,5]; track i) {
+                <span class="star" [class.filled]="i <= testimonial.rating">★</span>
+              }
+            </div>
+            <p class="testimonial-text">"{{ testimonial.text }}"</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">{{ testimonial.avatar }}</div>
+              <div class="author-info">
+                <span class="author-name">{{ testimonial.name }}</span>
+                <span class="author-position">{{ testimonial.position }}</span>
+                <span class="author-company">{{ testimonial.company }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
   <!-- Contact Section -->
   <section id="contact" class="contact">
     <div class="container">
-      <h2 class="section-title">Get In Touch</h2>
+      <div class="section-header animate-fade-in-up">
+        <span class="section-tag">Get In Touch</span>
+        <h2 class="section-title">Let's Work Together</h2>
+        <p class="section-subtitle">Have a project in mind? Let's create something amazing!</p>
+      </div>
+
       <div class="contact-content">
-        <div class="contact-text">
-          <p>{{ contactText }}</p>
-          <div class="contact-info">
+        <div class="contact-info animate-fade-in-left">
+          <div class="contact-intro">
+            <p>{{ contactText }}</p>
+          </div>
+
+          <div class="contact-items">
+            <a href="mailto:{{ email }}" class="contact-item">
+              <div class="contact-icon">📧</div>
+              <div class="contact-details">
+                <span class="contact-label">Email</span>
+                <span class="contact-value">{{ email }}</span>
+              </div>
+            </a>
+            <a href="tel:{{ phone }}" class="contact-item">
+              <div class="contact-icon">📱</div>
+              <div class="contact-details">
+                <span class="contact-label">Phone</span>
+                <span class="contact-value">{{ phone }}</span>
+              </div>
+            </a>
             <div class="contact-item">
-              <span class="contact-icon">📧</span>
-              <span>{{ email }}</span>
+              <div class="contact-icon">📍</div>
+              <div class="contact-details">
+                <span class="contact-label">Location</span>
+                <span class="contact-value">{{ location }}</span>
+              </div>
             </div>
-            <div class="contact-item">
-              <span class="contact-icon">📱</span>
-              <span>{{ phone }}</span>
-            </div>
-            <div class="contact-item">
-              <span class="contact-icon">📍</span>
-              <span>{{ location }}</span>
+          </div>
+
+          <div class="contact-socials">
+            <span class="socials-label">Connect with me:</span>
+            <div class="social-links">
+              @for (social of socialLinks; track social.name) {
+                <a [href]="social.url" class="social-link" target="_blank" rel="noopener">
+                  <span class="social-icon">{{ social.icon }}</span>
+                  <span class="social-name">{{ social.name }}</span>
+                </a>
+              }
             </div>
           </div>
         </div>
-        <form class="contact-form" (ngSubmit)="onSubmit()">
+
+        <form class="contact-form animate-fade-in-right" (ngSubmit)="onSubmit()">
           <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required>
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="John Doe" required />
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="email" placeholder="john@example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="Project Inquiry" required />
           </div>
           <div class="form-group">
             <label for="message">Message</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
+            <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Send Message</button>
+          <button type="submit" class="btn btn-primary">
+            <span>Send Message</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 4L10 16M10 16L4 10M10 16L16 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
         </form>
       </div>
     </div>
@@ -158,15 +424,33 @@
 </main>
 
 <footer class="footer">
+  <div class="footer-bg">
+    <div class="footer-gradient"></div>
+  </div>
   <div class="container">
     <div class="footer-content">
-      <p>&copy; {{ currentYear }} {{ name }}. All rights reserved.</p>
-      <div class="social-links">
-        @for (social of socialLinks; track social.name) {
-          <a [href]="social.url" class="social-link" target="_blank" rel="noopener">
-            {{ social.icon }}
-          </a>
-        }
+      <div class="footer-brand">
+        <span class="footer-logo">{{ name }}</span>
+        <p class="footer-tagline">{{ tagline }}</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-section">
+          <h4>Navigation</h4>
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-section">
+          <h4>Connect</h4>
+          @for (social of socialLinks; track social.name) {
+            <a [href]="social.url" target="_blank" rel="noopener">{{ social.name }}</a>
+          }
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; {{ currentYear }} {{ name }}. All rights reserved.</p>
+        <p class="footer-made">Made with ❤️ using Angular 17</p>
       </div>
     </div>
   </div>
