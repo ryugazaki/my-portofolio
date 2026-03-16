@@ -238,24 +238,19 @@
 
       <!-- Project filters -->
       <div class="project-filters animate-fade-in-up">
-        <button class="filter-btn active">All Projects</button>
-        <button class="filter-btn">Enterprise</button>
-        <button class="filter-btn">Dashboard</button>
-        <button class="filter-btn">Web Apps</button>
+        @for (category of filterCategories; track category) {
+          <button
+            class="filter-btn"
+            [class.active]="activeFilter === category"
+            (click)="setFilter(category)">
+            {{ category }}
+          </button>
+        }
       </div>
 
       <div class="projects-grid">
-        @for (project of projects; track project.id) {
-          <div class="project-card" [class.featured]="project.featured" animate-fade-in-up>
-            <div class="project-image">
-              <img [src]="project.image" [alt]="project.title" />
-              <div class="project-overlay">
-                <span class="project-category">{{ project.category }}</span>
-                @if (project.featured) {
-                  <span class="project-featured-badge">⭐ Featured</span>
-                }
-              </div>
-            </div>
+        @for (project of filteredProjects; track project.id) {
+          <div class="project-card" animate-fade-in-up>
             <div class="project-content">
               <div class="project-company">
                 <span class="company-icon">🏢</span>
@@ -292,16 +287,8 @@
               <h3 class="category-name">{{ category.name }}</h3>
             </div>
             <div class="category-skills">
-              @for (skill of category.skills; track skill.name) {
-                <div class="skill-item">
-                  <div class="skill-info">
-                    <span class="skill-name">{{ skill.name }}</span>
-                    <span class="skill-percentage">{{ skill.level }}%</span>
-                  </div>
-                  <div class="skill-bar">
-                    <div class="skill-progress" [style.width.%]="skill.level" [style]="'--accent-color: ' + category.color"></div>
-                  </div>
-                </div>
+              @for (skill of category.skills; track skill) {
+                <span class="skill-tag" [style]="'--tag-color: ' + category.color">{{ skill }}</span>
               }
             </div>
           </div>
@@ -344,114 +331,93 @@
 
   <!-- Contact Section -->
   <section id="contact" class="contact">
+    <div class="contact-bg">
+      <div class="contact-gradient"></div>
+      <div class="contact-pattern"></div>
+    </div>
     <div class="container">
-      <div class="section-header animate-fade-in-up">
-        <span class="section-tag">Get In Touch</span>
-        <h2 class="section-title">Let's Work Together</h2>
-        <p class="section-subtitle">Have a project in mind? Let's create something amazing!</p>
-      </div>
-
-      <div class="contact-content">
+      <div class="contact-wrapper">
         <div class="contact-info animate-fade-in-left">
-          <div class="contact-intro">
-            <p>{{ contactText }}</p>
-          </div>
+          <span class="contact-tag">Get In Touch</span>
+          <h2 class="contact-title">Let's Work<br/>Together</h2>
+          <p class="contact-text">{{ contactText }}</p>
 
-          <div class="contact-items">
-            <a href="mailto:{{ email }}" class="contact-item">
-              <div class="contact-icon">📧</div>
-              <div class="contact-details">
-                <span class="contact-label">Email</span>
-                <span class="contact-value">{{ email }}</span>
-              </div>
-            </a>
-            <a href="tel:{{ phone }}" class="contact-item">
-              <div class="contact-icon">📱</div>
-              <div class="contact-details">
-                <span class="contact-label">Phone</span>
-                <span class="contact-value">{{ phone }}</span>
-              </div>
-            </a>
-            <div class="contact-item">
-              <div class="contact-icon">📍</div>
-              <div class="contact-details">
-                <span class="contact-label">Location</span>
-                <span class="contact-value">{{ location }}</span>
+          <div class="contact-details-list">
+            <div class="contact-detail-item">
+              <span class="detail-icon">📧</span>
+              <div class="detail-content">
+                <span class="detail-label">Email me at</span>
+                <a href="mailto:{{ email }}" class="detail-value">{{ email }}</a>
               </div>
             </div>
-          </div>
-
-          <div class="contact-socials">
-            <span class="socials-label">Connect with me:</span>
-            <div class="social-links">
-              @for (social of socialLinks; track social.name) {
-                <a [href]="social.url" class="social-link" target="_blank" rel="noopener">
-                  <span class="social-icon">{{ social.icon }}</span>
-                  <span class="social-name">{{ social.name }}</span>
-                </a>
-              }
+            <div class="contact-detail-item">
+              <span class="detail-icon">📱</span>
+              <div class="detail-content">
+                <span class="detail-label">Call me at</span>
+                <a href="tel:{{ phone }}" class="detail-value">{{ phone }}</a>
+              </div>
+            </div>
+            <div class="contact-detail-item">
+              <span class="detail-icon">📍</span>
+              <div class="detail-content">
+                <span class="detail-label">Based in</span>
+                <span class="detail-value">{{ location }}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <form class="contact-form animate-fade-in-right" (ngSubmit)="onSubmit()">
-          <div class="form-group">
-            <label for="name">Your Name</label>
-            <input type="text" id="name" name="name" placeholder="John Doe" required />
+        <div class="contact-cta animate-fade-in-right">
+          <div class="cta-card">
+            <div class="cta-icon">🚀</div>
+            <h3 class="cta-title">Ready to Start a Project?</h3>
+            <p class="cta-text">I'm currently available for freelance work and full-time opportunities. Let's discuss how I can help bring your ideas to life.</p>
+
+            <div class="cta-buttons">
+              <a href="mailto:{{ email }}" class="btn btn-primary">
+                <span>Send Email</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M3 5L10 10L17 5M3 5V15H17V5M3 5L10 10L17 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+
+            <div class="cta-socials">
+              <span class="socials-text">Or connect with me:</span>
+              <div class="social-icons">
+                @for (social of socialLinks; track social.name) {
+                  <a [href]="social.url" class="social-icon-link" target="_blank" rel="noopener" [attr.title]="social.name">
+                    {{ social.icon }}
+                  </a>
+                }
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="email">Your Email</label>
-            <input type="email" id="email" name="email" placeholder="john@example.com" required />
-          </div>
-          <div class="form-group">
-            <label for="subject">Subject</label>
-            <input type="text" id="subject" name="subject" placeholder="Project Inquiry" required />
-          </div>
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">
-            <span>Send Message</span>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M10 4L10 16M10 16L4 10M10 16L16 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   </section>
 </main>
 
 <footer class="footer">
-  <div class="footer-bg">
-    <div class="footer-gradient"></div>
-  </div>
   <div class="container">
     <div class="footer-content">
-      <div class="footer-brand">
+      <div class="footer-left">
         <span class="footer-logo">{{ name }}</span>
-        <p class="footer-tagline">{{ tagline }}</p>
+        <span class="footer-divider">|</span>
+        <span class="footer-tagline">{{ tagline }}</span>
       </div>
-      <div class="footer-links">
-        <div class="footer-section">
-          <h4>Navigation</h4>
-          <a href="javascript:void(0)" (click)="scrollToSection('home')">Home</a>
-          <a href="javascript:void(0)" (click)="scrollToSection('about')">About</a>
-          <a href="javascript:void(0)" (click)="scrollToSection('projects')">Projects</a>
-          <a href="javascript:void(0)" (click)="scrollToSection('contact')">Contact</a>
-        </div>
-        <div class="footer-section">
-          <h4>Connect</h4>
-          @for (social of socialLinks; track social.name) {
-            <a [href]="social.url" target="_blank" rel="noopener">{{ social.name }}</a>
-          }
-        </div>
+      <div class="footer-right">
+        @for (social of socialLinks; track social.name) {
+          <a [href]="social.url" class="footer-social" target="_blank" rel="noopener" [attr.title]="social.name">
+            {{ social.icon }}
+          </a>
+        }
       </div>
-      <div class="footer-bottom">
-        <p>&copy; {{ currentYear }} {{ name }}. All rights reserved.</p>
-        <p class="footer-made">Made with ❤️ using Angular 17</p>
-      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; {{ currentYear }} {{ name }}. All rights reserved.</p>
+      <p class="footer-made">Made with ❤️ using Angular 20</p>
     </div>
   </div>
 </footer>
