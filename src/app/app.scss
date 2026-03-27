@@ -281,7 +281,6 @@ main { padding-top: 80px; }
       position: absolute;
       inset: -20px;
       border-radius: 99px;
-      background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
       opacity: 0.3;
       filter: blur(20px);
       animation: pulse 3s ease-in-out infinite;
