@@ -1,34 +1,44 @@
-import { Component } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
+type Theme = 'light' | 'dark';
+const CAREER_START_YEAR = 2018;
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
+export class App implements AfterViewInit, OnDestroy {
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private observers: IntersectionObserver[] = [];
+  private revealFallback?: ReturnType<typeof setTimeout>;
+
   // Personal Information
   protected name = 'Ryan Apriansyah';
 
-  constructor() {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', () => this.onScroll());
-    }
-  }
   protected role = 'Senior Frontend Developer';
   protected tagline =
     'Building exceptional digital experiences with modern web technologies';
+  protected years = new Date().getFullYear() - CAREER_START_YEAR;
   protected description =
-    'A passionate and creative frontend developer with 7+ years of experience in crafting scalable, user-centric web applications. Expert in Angular ecosystem with proven track record of delivering high-impact projects for enterprise clients including PLN, AKO Media Asia (SALT Indonesia), and various tech companies.';
+    'Frontend developer focused on scalable, user-centric web applications. Deep in the Angular ecosystem, shipping dashboards and enterprise products for PLN, AKO Media Asia (SALT Indonesia) and other tech companies.';
 
   // Stats
   protected stats = [
-    { value: '7+', label: 'Years Experience' },
-    { value: '15+', label: 'Projects Completed' },
+    { value: `${this.years}+`, label: 'Years of experience' },
+    { value: '15+', label: 'Projects shipped' },
     { value: '4', label: 'Companies' },
-    { value: '5+', label: 'Technologies Mastered' },
+    { value: '5+', label: 'Core technologies' },
   ];
 
   // About Section
@@ -46,7 +56,7 @@ export class App {
       type: 'Permanent Employee',
       description:
         'Leading frontend development for multiple high-impact dashboard projects using Angular 17+ and modern web technologies.',
-      projects: ['FMC Dashboard', 'CTP Dashboard', 'Universal Visualization'],
+      projects: ['WEC Telkomsel', 'FMC Dashboard', 'CTP Dashboard', 'Universal Visualization'],
       technologies: [
         'Angular 17-20',
         'TailwindCSS',
@@ -55,7 +65,6 @@ export class App {
         'MySQL',
         'Redis',
       ],
-      icon: '🏢',
     },
     {
       id: 2,
@@ -80,7 +89,6 @@ export class App {
         'Oracle',
         'PHP',
       ],
-      icon: '💼',
     },
     {
       id: 3,
@@ -100,7 +108,6 @@ export class App {
         'WebSocket',
         'MySQL',
       ],
-      icon: '💻',
     },
     {
       id: 4,
@@ -120,7 +127,6 @@ export class App {
         'Java Spring Boot',
         'Oracle',
       ],
-      icon: '🚀',
     },
   ];
 
@@ -161,6 +167,15 @@ export class App {
 
   // Projects Data
   protected projects = [
+    {
+      id: 15,
+      title: 'WEC Telkomsel',
+      category: ['Enterprise', 'Web Apps'],
+      description:
+        'Frontend operations for the Telkomsel web platform, a micro-frontend system spanning Angular, React, Next.js and Drupal (PHP) services. Responsible for monitoring website performance, implementing GTM tracking and Datadog RUM, and fixing reported bugs across services.',
+      technologies: ['Angular', 'React', 'Next.js', 'Drupal', 'PHP', 'GTM', 'Datadog RUM'],
+      company: 'AKO MEDIA ASIA',
+    },
     {
       id: 1,
       title: 'FMC Dashboard',
@@ -336,55 +351,43 @@ export class App {
     {
       id: 1,
       name: 'Frontend Frameworks',
-      icon: '🎨',
-      color: '#ef4444',
       skills: ['Angular (v4 - v20)', 'Vue.js', 'React', 'TypeScript', 'JavaScript', 'JQuery'],
     },
     {
       id: 2,
       name: 'Styling & UI Libraries',
-      icon: '💅',
-      color: '#ec4899',
       skills: ['TailwindCSS', 'Bootstrap', 'DevExtreme', 'PrimeNG', 'HTML5/CSS3', 'SCSS/Sass'],
     },
     {
       id: 3,
       name: 'Frontend Architecture',
-      icon: '🏗️',
-      color: '#3b82f6',
       skills: ['Micro Frontend', 'Module Federation', 'BIT Cloud', 'Nx Monorepo', 'Component Design System'],
     },
     {
       id: 4,
       name: 'State Management',
-      icon: '🔄',
-      color: '#10b981',
       skills: ['RxJS/NgRx', 'Vuex/Pinia', 'Redux/Context API', 'Signals (Angular)'],
     },
     {
       id: 5,
       name: 'Backend & Database',
-      icon: '⚙️',
-      color: '#f59e0b',
       skills: ['Node.js', 'Java Spring Boot', 'PHP/Laravel', 'PostgreSQL', 'MySQL', 'Oracle', 'Redis'],
     },
     {
       id: 6,
       name: 'Dev Tools & Methodologies',
-      icon: '🔧',
-      color: '#8b5cf6',
       skills: ['Git/GitLab/GitHub', 'Jira/Agile/Scrum', 'REST API', 'WebSocket', 'CI/CD Pipelines', 'Docker'],
     },
   ];
 
   // Featured skills (for hero section)
   protected featuredSkills = [
-    { name: 'Angular', icon: '🅰️', color: '#dd0031' },
-    { name: 'Vue.js', icon: '💚', color: '#42b883' },
-    { name: 'React', icon: '⚛️', color: '#61dafb' },
-    { name: 'TypeScript', icon: '📘', color: '#3178c6' },
-    { name: 'TailwindCSS', icon: '🎨', color: '#06b6d4' },
-    { name: 'Micro Frontend', icon: '🧩', color: '#8b5cf6' },
+    { name: 'Angular' },
+    { name: 'Vue.js' },
+    { name: 'React' },
+    { name: 'TypeScript' },
+    { name: 'TailwindCSS' },
+    { name: 'Micro Frontend' },
   ];
 
   // Certifications
@@ -406,7 +409,6 @@ export class App {
       name: 'Ambar Dwi Saputra',
       position: 'Frontend Developer',
       company: 'AKO MEDIA ASIA',
-      avatar: '👨‍💻',
       text: 'Ryan is an exceptional frontend developer with deep expertise in Angular. His ability to translate complex requirements into elegant, user-friendly interfaces is remarkable. Always delivers high-quality code on time.',
       rating: 5,
     },
@@ -415,7 +417,6 @@ export class App {
       name: 'Abdul Hakam',
       position: 'Tech Lead',
       company: 'PT. TAB SOLUTIONS',
-      avatar: '👨‍💼',
       text: 'Working with Ryan was a great pleasure. His technical skills combined with his problem-solving abilities made him an invaluable team member. He consistently goes above and beyond expectations.',
       rating: 5,
     },
@@ -424,7 +425,6 @@ export class App {
       name: 'Ja\'far',
       position: 'Senior Developer',
       company: 'ICON+',
-      avatar: '👨‍💻',
       text: 'Ryan is not just a skilled developer but also a great team player. His willingness to share knowledge and help others grow makes him stand out. Highly recommend!',
       rating: 5,
     },
@@ -433,7 +433,6 @@ export class App {
       name: 'Alif Razan Saputra',
       position: 'Fullstack Developer',
       company: 'Former Colleague',
-      avatar: '👨‍💻',
       text: 'I had the pleasure of working alongside Ryan on multiple projects. His attention to detail, clean code practices, and innovative approach to problem-solving consistently impressed the entire team. A true professional!',
       rating: 5,
     },
@@ -441,24 +440,34 @@ export class App {
 
   // Social Links (placeholder - user can update later)
   protected socialLinks = [
-    { name: 'GitLab', url: 'https://gitlab.com/ryan.apriansyah21', icon: '🐙' },
-    { name: 'GitHub', url: 'https://github.com/ryugazaki', icon: '👨‍💻' },
+    { name: 'GitLab', url: 'https://gitlab.com/ryan.apriansyah21' },
+    { name: 'GitHub', url: 'https://github.com/ryugazaki' },
     {
       name: 'LinkedIn',
       url: 'https://www.linkedin.com/in/ryan-apriansyah-549b42190/',
-      icon: '💼',
     },
-    { name: 'Email', url: 'mailto:ryan.apriansyah21@gmail.com', icon: '📧' },
+    { name: 'Email', url: 'mailto:ryan.apriansyah21@gmail.com' },
   ];
 
-  // Mobile menu toggle
-  protected mobileMenuOpen = false;
-  protected isScrolled = false;
+  protected navLinks = [
+    { id: 'about', label: 'About' },
+    { id: 'experience', label: 'Experience' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'testimonials', label: 'Words' },
+    { id: 'contact', label: 'Contact' },
+  ];
+
+  // UI state
+  protected mobileMenuOpen = signal(false);
+  protected isScrolled = signal(false);
+  protected activeSection = signal('home');
+  protected theme = signal<Theme>('light');
 
   // Project filter
-  protected activeFilter = 'All Projects';
+  protected activeFilter = signal('All');
   protected filterCategories = [
-    'All Projects',
+    'All',
     'Enterprise',
     'Dashboard',
     'Web Apps',
@@ -466,53 +475,118 @@ export class App {
     'Mobile Apps',
   ];
 
-  get filteredProjects() {
-    if (this.activeFilter === 'All Projects') {
-      return this.projects;
-    }
-    return this.projects.filter((project) =>
-      project.category.includes(this.activeFilter)
-    );
+  protected filteredProjects = computed(() => {
+    const filter = this.activeFilter();
+    return filter === 'All'
+      ? this.projects
+      : this.projects.filter((p) => p.category.includes(filter));
+  });
+
+  protected countFor(category: string): number {
+    return category === 'All'
+      ? this.projects.length
+      : this.projects.filter((p) => p.category.includes(category)).length;
+  }
+
+  protected pad(n: number): string {
+    return String(n).padStart(2, '0');
   }
 
   setFilter(category: string): void {
-    this.activeFilter = category;
+    this.activeFilter.set(category);
   }
 
   toggleMobileMenu(): void {
-    this.mobileMenuOpen = !this.mobileMenuOpen;
+    this.mobileMenuOpen.update((open) => !open);
   }
 
-  // Scroll to section
+  toggleTheme(): void {
+    this.applyTheme(this.theme() === 'dark' ? 'light' : 'dark');
+  }
+
+  private applyTheme(theme: Theme): void {
+    this.theme.set(theme);
+    document.documentElement.dataset['theme'] = theme;
+    try {
+      localStorage.setItem('theme', theme);
+    } catch {
+      /* storage unavailable */
+    }
+  }
+
   scrollToSection(sectionId: string): void {
     const element = document.getElementById(sectionId);
     if (element) {
-      const offset = 80; // navbar height
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
+      const offset = sectionId === 'home' ? 0 : 72;
+      const top = element.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
     }
-    this.mobileMenuOpen = false;
+    this.mobileMenuOpen.set(false);
   }
 
-  // Scroll handler for navbar
-  onScroll(): void {
-    this.isScrolled = window.scrollY > 50;
-  }
+  ngAfterViewInit(): void {
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem('theme');
+    } catch {
+      /* storage unavailable */
+    }
+    const initial: Theme =
+      saved === 'light' || saved === 'dark'
+        ? saved
+        : window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+    this.applyTheme(initial);
 
-  // Form submission handler
-  onSubmit(): void {
-    alert(
-      'Terima kasih! Pesan Anda telah terkirim. Saya akan segera menghubungi Anda.\n\nThank you! Your message has been sent. I will contact you soon.',
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    this.onScroll();
+
+    const root = this.host.nativeElement;
+
+    // Reveal-on-scroll. Content stays visible unless the observer is available,
+    // and a fallback reveals everything if it never fires.
+    let fired = false;
+    const items = Array.from(root.querySelectorAll('.reveal'));
+    const reveal = new IntersectionObserver(
+      (entries) => {
+        fired = true;
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            reveal.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0, rootMargin: '0px 0px -5% 0px' },
     );
+    root.classList.add('reveal-ready');
+    items.forEach((el) => reveal.observe(el));
+    this.revealFallback = setTimeout(() => {
+      if (!fired) items.forEach((el) => el.classList.add('in'));
+    }, 1500);
+
+    // Scroll spy
+    const spy = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) this.activeSection.set(entry.target.id);
+        }
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    root.querySelectorAll('section[id]').forEach((el) => spy.observe(el));
+
+    this.observers = [reveal, spy];
   }
 
-  // Get current year for footer
-  getCurrentYear(): number {
-    return new Date().getFullYear();
+  ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.onScroll);
+    clearTimeout(this.revealFallback);
+    this.observers.forEach((o) => o.disconnect());
   }
+
+  private onScroll = (): void => {
+    this.isScrolled.set(window.scrollY > 24);
+  };
 }
