@@ -71,17 +71,13 @@ $bp-sm: 600px;
   }
 
   .brand-mark {
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: var(--ink);
-    color: var(--on-ink);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
+    width: 48px;
+    height: 24px;
+    color: var(--brand-ink);
+    flex-shrink: 0;
   }
+
+  .brand-accent { fill: var(--brand-accent); }
 
   .brand-name { @media (max-width: $bp-sm) { display: none; } }
 
