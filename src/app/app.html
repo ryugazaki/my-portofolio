@@ -4,7 +4,7 @@
   <div class="nav-inner">
     <a href="#home" class="brand" (click)="$event.preventDefault(); scrollToSection('home')" aria-label="Back to top">
       <span class="brand-mark">RA</span>
-      <span class="brand-name">{{ name }}</span>
+      <span class="brand-name">{{ profile.name }}</span>
     </a>
 
     <nav class="nav-links" id="nav-links" aria-label="Primary">
@@ -56,14 +56,14 @@
       <div class="hero-copy">
         <p class="status">
           <span class="dot"></span>
-          Open to opportunities · {{ location }}
+          Open to opportunities · {{ profile.location }}
         </p>
         <h1 class="hero-title">
           <span class="line">Ryan</span>
           <span class="line">Apriansyah<span class="stop">.</span></span>
         </h1>
-        <p class="hero-role">{{ role }}</p>
-        <p class="hero-lead">{{ description }}</p>
+        <p class="hero-role">{{ profile.role }}</p>
+        <p class="hero-lead">{{ profile.description }}</p>
 
         <div class="hero-cta">
           <a href="#projects" class="btn btn-solid" (click)="$event.preventDefault(); scrollToSection('projects')">
@@ -75,10 +75,10 @@
       </div>
 
       <figure class="portrait">
-        <img src="assets/img/Photo Profile.jpeg" alt="Portrait of Ryan Apriansyah" width="520" height="650" />
+        <img ngSrc="assets/img/profile.webp" alt="Portrait of Ryan Apriansyah" width="760" height="950" priority />
         <figcaption>
-          <span>{{ name }}</span>
-          <span>{{ location }}</span>
+          <span>{{ profile.name }}</span>
+          <span>{{ profile.location }}</span>
         </figcaption>
       </figure>
     </div>
@@ -94,8 +94,8 @@
       </dl>
       <p class="stack-line">
         <span class="label">Stack</span>
-        @for (skill of featuredSkills; track skill.name) {
-          <span>{{ skill.name }}</span>
+        @for (skill of featuredSkills; track skill) {
+          <span>{{ skill }}</span>
         }
       </p>
     </div>
@@ -111,12 +111,12 @@
 
       <div class="about-grid">
         <div class="about-text reveal">
-          <p>{{ aboutText }}</p>
+          <p>{{ profile.about }}</p>
         </div>
         <dl class="facts reveal">
           <div>
             <dt>Location</dt>
-            <dd>{{ location }}</dd>
+            <dd>{{ profile.location }}</dd>
           </div>
           <div>
             <dt>Education</dt>
@@ -216,11 +216,24 @@
             </div>
             <div class="project-body">
               <p>{{ project.description }}</p>
+              @if (project.highlights?.length) {
+                <ul class="highlights">
+                  @for (item of project.highlights; track item) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+              }
               <ul class="tags">
                 @for (tech of project.technologies; track tech) {
                   <li>{{ tech }}</li>
                 }
               </ul>
+              @if (project.link) {
+                <a class="project-link" [href]="project.link" target="_blank" rel="noopener">
+                  View project
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                </a>
+              }
             </div>
           </li>
         }
@@ -252,69 +265,73 @@
   </section>
 
   <!-- Testimonials -->
-  <section id="testimonials" class="section">
-    <div class="wrap">
-      <header class="section-head reveal">
-        <span class="index">05</span>
-        <h2>Kind words</h2>
-      </header>
+  @if (testimonials.length) {
+    <section id="testimonials" class="section">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <span class="index">05</span>
+          <h2>Kind words</h2>
+        </header>
 
-      <div class="quotes">
-        @for (testimonial of testimonials; track testimonial.id) {
-          <figure class="quote reveal">
-            <blockquote>{{ testimonial.text }}</blockquote>
-            <figcaption>
-              <span class="quote-name">{{ testimonial.name }}</span>
-              <span class="muted">{{ testimonial.position }}, {{ testimonial.company }}</span>
-            </figcaption>
-          </figure>
-        }
+        <div class="quotes">
+          @for (testimonial of testimonials; track testimonial.id) {
+            <figure class="quote reveal">
+              <blockquote>{{ testimonial.text }}</blockquote>
+              <figcaption>
+                @if (testimonial.url) {
+                  <a class="quote-name" [href]="testimonial.url" target="_blank" rel="noopener">{{ testimonial.name }}</a>
+                } @else {
+                  <span class="quote-name">{{ testimonial.name }}</span>
+                }
+                <span class="muted">{{ testimonial.position }}, {{ testimonial.company }}</span>
+              </figcaption>
+            </figure>
+          }
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  }
 
   <!-- Contact -->
   <section id="contact" class="section contact">
     <div class="wrap">
       <header class="section-head reveal">
-        <span class="index">06</span>
+        <span class="index">{{ testimonials.length ? '06' : '05' }}</span>
         <h2>Contact</h2>
       </header>
 
       <div class="contact-body">
         <div class="contact-intro reveal">
           <p class="contact-lead">Let's build something <em>worth shipping</em>.</p>
-          <p class="contact-text">{{ contactText }}</p>
+          <p class="contact-text">{{ profile.contactText }}</p>
         </div>
 
         <div class="contact-list reveal">
-          <a class="mail" [href]="'mailto:' + email">
+          <a class="mail" [href]="'mailto:' + profile.email">
             <span class="label">Email</span>
             <span class="mail-addr">
-              {{ email }}
+              {{ profile.email }}
               <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
             </span>
           </a>
           <div class="contact-row">
             <span class="label">Phone</span>
-            <a [href]="'tel:' + phone">{{ phone }}</a>
+            <a [href]="'tel:' + profile.phone">{{ profile.phone }}</a>
           </div>
           <div class="contact-row">
             <span class="label">Based in</span>
-            <span>{{ location }}</span>
+            <span>{{ profile.location }}</span>
           </div>
           <div class="contact-row">
             <span class="label">Elsewhere</span>
             <ul class="socials">
               @for (social of socialLinks; track social.name) {
-                @if (social.name !== 'Email') {
-                  <li>
-                    <a [href]="social.url" target="_blank" rel="noopener">
-                      {{ social.name }}
-                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
-                    </a>
-                  </li>
-                }
+                <li>
+                  <a [href]="social.url" target="_blank" rel="noopener">
+                    {{ social.name }}
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                  </a>
+                </li>
               }
             </ul>
           </div>
@@ -326,10 +343,8 @@
 
 <footer class="footer">
   <div class="wrap footer-inner">
-    <p>&copy; {{ currentYear }} {{ name }}</p>
+    <p>&copy; {{ currentYear }} {{ profile.name }}</p>
     <p class="muted">Built with Angular 20</p>
     <a href="#home" (click)="$event.preventDefault(); scrollToSection('home')">Back to top ↑</a>
   </div>
 </footer>
-
-<router-outlet />
