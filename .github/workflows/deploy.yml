@@ -1,44 +1,56 @@
-name: Build and Deploy Angular to GitHub Pages
+name: CI and Deploy to GitHub Pages
 
 on:
-  # Trigger workflow saat ada push ke branch "main"
+  # Pull requests: run tests and a build check, never deploy
+  pull_request:
+    branches:
+      - master
+
+  # Pushes to master (including merged PRs): test, build and deploy
   push:
     branches:
       - master
 
-  # Mengizinkan deploy manual dari tab Actions di GitHub
+  # Allow a manual deploy from the Actions tab
   workflow_dispatch:
+
+# Never run two deploys of the same ref at once; a newer run waits for the
+# previous one instead of cancelling it mid-publish
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: write # needed to push the build to the gh-pages branch
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout source code
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Setup Node.js (Sesuaikan versi dengan package.json proyek Anda)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
+          cache: npm
 
-      # 3. Install dependencies (gunakan npm ci untuk build yang lebih cepat dan konsisten)
       - name: Install dependencies
         run: npm ci
 
-      # 4. Build aplikasi Angular
-      # --base-href sangat penting agar aset (css/js) dimuat dengan benar di GitHub Pages
-      # Ganti 'nama-repo-anda' dengan nama repositori GitHub Anda
-      - name: Build Angular App
+      - name: Run unit tests
+        run: npm run test:ci
+
+      # --base-href must match the repository name so assets resolve under
+      # https://<user>.github.io/my-portofolio/
+      - name: Build
         run: npm run build -- --configuration production --base-href /my-portofolio/
 
-      # 5. Deploy ke GitHub Pages
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        if: github.event_name != 'pull_request'
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # Folder output default Angular biasanya 'dist/nama-proyek' (cek angular.json)
-          # Jika di angular.json outputPath hanya 'dist', gunakan 'dist'
           publish_dir: ./dist/my-portofolio/browser
