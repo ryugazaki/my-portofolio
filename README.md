@@ -1,59 +1,85 @@
-# MyPortofolio
+# Ryan Apriansyah — Portfolio
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.1.
+Personal portfolio of Ryan Apriansyah, Senior Frontend Developer based in Bogor, Indonesia.
 
-## Development server
+**Live site:** https://ryugazaki.github.io/my-portofolio/
 
-To start a local development server, run:
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.webp">
+  <img src="docs/screenshot-light.webp" alt="Portfolio home page showing the hero section with name, role and portrait">
+</picture>
 
-```bash
-ng serve
-```
+## Features
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Single-page layout: About, Experience, Projects (filterable), Skills and Contact
+- Light and dark theme that follows the system setting, with a manual toggle and no flash on load
+- Reveal-on-scroll animations and an active-section indicator in the nav
+- Responsive down to phone width, keyboard accessible, respects `prefers-reduced-motion`
+- SEO-ready: Open Graph/Twitter preview image, canonical URL, JSON-LD `Person` data and sitemap
 
-## Code scaffolding
+## Tech stack
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- [Angular 20](https://angular.dev) — standalone component, signals, zoneless change detection
+- SCSS with CSS custom properties for theming
+- `NgOptimizedImage` for the hero portrait (WebP)
+- Karma + Jasmine for unit tests
+- GitHub Actions + GitHub Pages for CI and hosting
 
-```bash
-ng generate component component-name
-```
+## Getting started
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Requires Node.js 20.19+, 22.12+ or 24+.
 
 ```bash
-ng test
+npm ci        # install dependencies
+npm start     # dev server at http://localhost:4200
+npm run build # production build into dist/my-portofolio/browser
+npm test      # unit tests in watch mode
+npm run test:ci # unit tests once, headless (used in CI)
 ```
 
-## Running end-to-end tests
+## Updating content
 
-For end-to-end (e2e) testing, run:
+All content lives in typed data files, so most updates never touch the component:
 
-```bash
-ng e2e
+| File | Content |
+| --- | --- |
+| `src/app/data/profile.ts` | Name, role, bio, contact details, social links, career start year |
+| `src/app/data/experience.ts` | Work experience and education |
+| `src/app/data/projects.ts` | Projects and filter categories |
+| `src/app/data/skills.ts` | Skill groups and the hero "Stack" line |
+| `src/app/data/testimonials.ts` | Testimonials (the section stays hidden while the list is empty) |
+
+Types for every entry are in `src/app/data/models.ts`. A few optional fields render only when filled:
+
+- `Project.highlights` — measurable outcomes, e.g. `'Cut page load time by 40%'`
+- `Project.link` — live demo, repository or case study
+- `Testimonial.url` — source of the quote, e.g. a LinkedIn recommendation
+
+Static files served as-is (favicon, Open Graph image, sitemap) are in `public/`; images used by the page are in `src/assets/`.
+
+## Project structure
+
+```
+src/
+├── index.html          # meta tags, Open Graph, JSON-LD, theme bootstrap
+├── styles.scss         # design tokens (colors, fonts) and global styles
+└── app/
+    ├── app.ts          # page component: UI state, theme, scroll behaviour
+    ├── app.html        # page template
+    ├── app.scss        # page styles
+    └── data/           # all portfolio content (see above)
+public/                 # favicon, og-image.jpg, sitemap.xml
+.github/workflows/      # CI and deploy workflow
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Deployment
 
-## Additional Resources
+`.github/workflows/deploy.yml` runs on every pull request and every push to `master`:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. Install dependencies and run the unit tests
+2. Build for production with `--base-href /my-portofolio/`
+3. On `master` only, publish `dist/my-portofolio/browser` to the `gh-pages` branch, which GitHub Pages serves
+
+Pull requests get the test and build check without deploying. A deploy can also be started by hand from the **Actions** tab (`workflow_dispatch`).
+
+If the site moves to a custom domain, update the `--base-href` in the workflow and the absolute URLs in `src/index.html` and `public/sitemap.xml`.
